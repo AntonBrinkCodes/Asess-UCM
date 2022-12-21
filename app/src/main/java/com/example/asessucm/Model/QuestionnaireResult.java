@@ -1,5 +1,7 @@
 package com.example.asessucm.Model;
 
+import java.util.Date;
+
 /**
  * Class to represent a result from a questionnare. Thinking scoreDelta is the difference in current
  * score vs previous questionnaire score. If scoreDelta > 13 then some kind of feedback shown to the user.
@@ -7,9 +9,16 @@ package com.example.asessucm.Model;
  */
 public class QuestionnaireResult {
     private float score, scoreDelta;
+    private Date date;
 
     public QuestionnaireResult(float score) {
         this.score = score;
+        this.date = new Date();
+    }
+
+    public QuestionnaireResult(float score, Date date) {
+        this.score = score;
+        this.date = date;
     }
 
     public float getScore() {
