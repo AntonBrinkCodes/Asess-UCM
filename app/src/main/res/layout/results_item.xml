@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="1dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/cardview_dark_background"
+        />
+        <RelativeLayout
+            android:id="@+id/result_item"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/cardview_dark_background"
+            android:outlineAmbientShadowColor="@color/cardview_dark_background">
+
+
+            <TextView
+                android:id="@+id/Date_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2022-10-10 10:10"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"/>
+
+            <ImageView
+                android:id="@+id/questionnaire_result_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_baseline_arrow_upward_24" />
+
+            <ImageView
+                android:id="@+id/sensor_result_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/questionnaire_result_image"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                app:srcCompat="@android:drawable/alert_light_frame" />
+
+
+        </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
