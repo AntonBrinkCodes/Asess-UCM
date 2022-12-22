@@ -3,7 +3,7 @@ package com.example.asessucm.Model;
 import java.util.Date;
 
 /**
- * Class to represent a result from a questionnare. Thinking scoreDelta is the difference in current
+ * Class to represent a result from a questionnaire. Thinking scoreDelta is the difference in current
  * score vs previous questionnaire score. If scoreDelta > 13 then some kind of feedback shown to the user.
  * ... Maybe should be int and not float...
  */
