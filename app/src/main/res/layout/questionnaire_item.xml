@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardBackgroundColor="@color/cardview_dark_background"
+        app:cardCornerRadius="10dp"
+        >
+
+    <RelativeLayout
+        android:id="@+id/result_item"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/cardview_dark_background"
+        android:outlineAmbientShadowColor="@color/cardview_dark_background">
+
+
+        <TextView
+            android:id="@+id/questionnaire_question_string"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Why is your shoulder so bad"
+
+            android:layout_marginStart="40dp"
+            />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="wrap_content"
+            android:minWidth="300dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:layout_centerVertical="true"
+            android:max="10"
+            android:min="1"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:progress="5" />
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
