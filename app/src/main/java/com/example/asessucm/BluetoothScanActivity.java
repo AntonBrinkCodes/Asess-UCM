@@ -82,7 +82,6 @@ public class BluetoothScanActivity extends AppCompatActivity {
             for(Boolean b : result.values()) {
                 areAllGranted = areAllGranted && b;
             }
-
         });
     }
 

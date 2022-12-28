@@ -9,20 +9,24 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/questions_fragment_container"
+        android:name="com.example.asessucm.QuestionnaireFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="450dp"
         android:foregroundGravity="center"
-        app:layout_constraintTop_toBottomOf="@id/Title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/questionnaire_save_button"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Title"
+        tools:layout="@layout/fragment_questionnaire" />
 
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Questionnaire"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
