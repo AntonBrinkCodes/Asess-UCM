@@ -5,6 +5,7 @@ import android.util.Log;
 
 
 import com.example.asessucm.Model.ResultList;
+import com.example.asessucm.Model.SensorResultList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,6 +29,7 @@ public class FileHandler {
     ObjectInputStream ois;
     Context context;
     static String fileName = "results.ser";
+    static String fileNameAngles = "angleResults.ser"
     private static final String filehandler_tag = "Filehandler";
 
     /**
@@ -44,6 +46,35 @@ public class FileHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void saveAnglesResults(SensorResultList angles, Context context){
+        try{
+            fos = context.openFileOutput(fileNameAngles, Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(angles);
+            oos.close();
+            Log.i(filehandler_tag, "saved file");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public SensorResultList loadAnglesResults(){
+        try {
+            fis = context.openFileInput(fileName);
+            ois = new ObjectInputStream(fis);
+            Log.i(filehandler_tag,"Loaded file");
+            SensorResultList tmp = (SensorResultList) ois.readObject();
+            ois.close();
+            return tmp;
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+        Log.i(filehandler_tag, "Failed to load file uh oh");
+        /* If we fail to load from file for some reason, like the first time the app
+        is opened after install */
+        return null;
     }
 
     /**
