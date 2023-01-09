@@ -24,6 +24,15 @@
             android:exported="true"/>
         <activity
             android:name=".BluetoothScanActivity"
+            android:exported="true"/>
+
+
+        <activity
+            android:name=".QuestionnaireActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".SensorActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,10 +44,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
-        <activity
-            android:name=".QuestionnaireActivity"
-            android:exported="true"/>
 
     </application>
 

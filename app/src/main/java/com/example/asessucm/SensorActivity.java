@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.asessucm.Model.SensorReading;
 import com.example.asessucm.Model.SensorResultList;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SensorActivity extends AppCompatActivity implements SensorEventListener {
+public class SensorActivity extends FragmentActivity implements SensorEventListener {
     // Movesense 2.0 UUIDs (should be placed in resources file)
     public static final UUID MOVESENSE_2_0_SERVICE =
             UUID.fromString("34802252-7185-4d5d-b431-630e7050e8f0");
@@ -75,12 +77,15 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private String SAVE_TAG = "Saving";
 
     //UI
-    TextView BTAngleView,IntAngleView,BTTimestampView,IntTimestampView,deviceView;
-    Button startButton,stopButton;
+    //TextView BTAngleView,IntAngleView,BTTimestampView,IntTimestampView,deviceView;
 
     private String INT_TAG = "InternalSensor";
     private String BT_TAG = "BTSensor";
     private Handler handler;
+
+    // Fragments
+    ConnectFragment connectFragment;
+    GraphFragment graphFragment;
 
     @RequiresApi(api = Build.VERSION_CODES.S)
     @SuppressLint("MissingPermission")
@@ -88,27 +93,21 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     public final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_sensors);
-        BTAngleView = findViewById(R.id.bt_angle);
-        BTTimestampView = findViewById(R.id.bt_timestamp);
-        IntAngleView = findViewById(R.id.int_angle);
-        IntTimestampView = findViewById(R.id.int_timestamp);
-        deviceView = findViewById(R.id.bt_info);
-
-        startButton = findViewById(R.id.start_button);
-        startButton.setOnClickListener(this::startSaving);
-        stopButton = findViewById(R.id.stop_button);
-        stopButton.setOnClickListener(this::stopSaving);
-
+        setContentView(R.layout.activity_sensor);
         Intent intent = getIntent();
         selectedDevice = intent.getParcelableExtra(BluetoothScanActivity.SELECTED_DEVICE);
 
         if (selectedDevice == null) {
-            Toast.makeText(this, "No device found", Toast.LENGTH_SHORT).show();
-            deviceView.setText("No device");
+            //Show connectFragment with instructions if no device is connected
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.graphFragmentContainer, connectFragment);
+            ft.commit();
+            Toast.makeText(this, "No device found, click Connect to find device", Toast.LENGTH_SHORT).show();
         } else {
-            deviceView.setText(selectedDevice.getName());
-            Toast.makeText(this, selectedDevice.getName().toString(), Toast.LENGTH_SHORT).show();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.graphFragmentContainer, graphFragment);
+            ft.commit();
+            Toast.makeText(this, selectedDevice.getName(), Toast.LENGTH_SHORT).show();
         }
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -327,8 +326,12 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
                     handler.post(new Runnable() {
                         public void run() {
-                            BTTimestampView.setText("" + time + " ms");
-                            BTAngleView.setText("" + (int) BTAngle);
+                            /**
+                             * This is where we show data to user!
+                              */
+
+                            //BTTimestampView.setText("" + time + " ms");
+                            //BTAngleView.setText("" + (int) BTAngle);
                         }
                     });
                 }
@@ -352,8 +355,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         double dt = 1.0/52.0;
         IntAngle = IntAngle + dt*xGyro;
-        IntAngleView.setText(""+(int) -IntAngle);
-        IntTimestampView.setText(""+event.timestamp+" ns");
+        //IntAngleView.setText(""+(int) -IntAngle);
+        //IntTimestampView.setText(""+event.timestamp+" ns");
 
         intAll.add(new SensorReading(-IntAngle,IntTimestamp));
     }
