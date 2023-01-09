@@ -343,18 +343,21 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                         //BTSensorReadingList.add(new SensorReading(comAcc[j],time));
                         //internalSensorReadingList.add(new SensorReading(IntAngle,IntTimestamp));
                         anglesResultList.addToBTList(comAcc,BTTimestamp);
+
+                        handler.post(new Runnable() {
+                            public void run() {
+                                /**
+                                 * This is where we show data to user!
+                                 */
+                                graphFragment.addDataPoint(anglesResultList.getLastFourInternal(),
+                                        comAcc, anglesResultList.getLength());
+                                //BTTimestampView.setText("" + time + " ms");
+                                //BTAngleView.setText("" + (int) BTAngle);
+                            }
+                        });
                     }
 
-                    handler.post(new Runnable() {
-                        public void run() {
-                            /**
-                             * This is where we show data to user!
-                              */
 
-                            //BTTimestampView.setText("" + time + " ms");
-                            //BTAngleView.setText("" + (int) BTAngle);
-                        }
-                    });
                 }
             }
         }
