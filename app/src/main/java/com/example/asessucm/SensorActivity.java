@@ -99,11 +99,13 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
 
         if (selectedDevice == null) {
             //Show connectFragment with instructions if no device is connected
+            connectFragment = new ConnectFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.graphFragmentContainer, connectFragment);
             ft.commit();
             Toast.makeText(this, "No device found, click Connect to find device", Toast.LENGTH_SHORT).show();
         } else {
+            graphFragment = new GraphFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.graphFragmentContainer, graphFragment);
             ft.commit();

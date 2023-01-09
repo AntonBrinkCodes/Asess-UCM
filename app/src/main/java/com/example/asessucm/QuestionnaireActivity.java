@@ -18,7 +18,6 @@ public class QuestionnaireActivity extends FragmentActivity {
     private Handler handler;
     private Button saveBtn;
     private QuestionnaireFragment questionnaireFragment;
-    private GraphFragment graphFragment;
 
     private final static String LOG_TAG = "QuestionnaireActivity";
     @Override
@@ -30,8 +29,7 @@ public class QuestionnaireActivity extends FragmentActivity {
         saveBtn.setOnClickListener(this::saveBtn);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         questionnaireFragment = new QuestionnaireFragment();
-        graphFragment = new GraphFragment();
-        ft.replace(R.id.questions_fragment_container, graphFragment);
+        ft.replace(R.id.questions_fragment_container, questionnaireFragment);
         ft.commit();
 
     }

@@ -111,7 +111,7 @@ public class BluetoothScanActivity extends AppCompatActivity {
     private void onDeviceSelected(int position) {
         BluetoothDevice selectedDevice = devices.get(position);
 
-        Intent intent = new Intent(BluetoothScanActivity.this, QuestionnaireActivity.class);
+        Intent intent = new Intent(BluetoothScanActivity.this, SensorActivity.class);
         intent.putExtra(SELECTED_DEVICE, selectedDevice);
         startActivity(intent);
     }
