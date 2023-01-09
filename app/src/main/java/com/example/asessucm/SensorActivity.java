@@ -64,13 +64,13 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     private int samplingRate = 19231;
 
     // Saving
-    ArrayList<SensorReading> internalSensorReadingList = new ArrayList<>();
-    ArrayList<SensorReading> BTSensorReadingList = new ArrayList<>();
+    //ArrayList<SensorReading> internalSensorReadingList = new ArrayList<>();
+    //ArrayList<SensorReading> BTSensorReadingList = new ArrayList<>();
     ArrayList<SensorReading> intAll = new ArrayList<>();
     ArrayList<SensorReading> BTAll = new ArrayList<>();
     SensorResultList anglesResultList;
     FileHandler fileHandler;
-    double comAcc = 0;
+    //double comAcc = 0;
     double IntAngle = 0;
     float IntTimestamp,BTTimestamp;
     int counter = 0;
@@ -125,8 +125,9 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
 
         handler = new Handler();
 
-        internalSensorReadingList = new ArrayList<>();
-        BTSensorReadingList = new ArrayList<>();
+        //internalSensorReadingList = new ArrayList<>();
+        //BTSensorReadingList = new ArrayList<>();
+        anglesResultList = new SensorResultList();
         fileHandler = new FileHandler();
 
 
@@ -161,7 +162,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     @Override
     protected void onStop() {
         super.onStop();
-        anglesResultList = new SensorResultList(internalSensorReadingList,BTSensorReadingList);
+        //anglesResultList = new SensorResultList(internalSensorReadingList,BTSensorReadingList);
         fileHandler.saveAnglesResults(anglesResultList,this);
         if (bluetoothGatt != null) {
             bluetoothGatt.disconnect();
@@ -322,6 +323,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                     float[] accX = new float[4];
                     float[] accY = new float[4];
                     float[] accZ = new float[4];
+                    double[] comAcc = new double[4];
                     int j = 0;
 
                     BTTimestamp = time;
@@ -330,16 +332,17 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                         accX[j] = TypeConverter.fourBytesToFloat(data, i);
                         accY[j] = TypeConverter.fourBytesToFloat(data, i+4);
                         accZ[j] = TypeConverter.fourBytesToFloat(data, i+8);
-                        comAcc = Math.sqrt(Math.pow(accX[j],2)+Math.pow(accY[j],2)+Math.pow(accZ[j],2))-9.81;
+                        comAcc[j] = Math.sqrt(Math.pow(accX[j],2)+Math.pow(accY[j],2)+Math.pow(accZ[j],2))-9.81;
 
-                        BTAll.add(new SensorReading(comAcc,time));
+                        BTAll.add(new SensorReading(comAcc[j],time));
                         //intAll.add(new SensorReading(IntAngle,IntTimestamp));
-                        if (saving) {
-                            BTSensorReadingList.add(new SensorReading(comAcc,time));
-                            internalSensorReadingList.add(new SensorReading(IntAngle,IntTimestamp));
-                            counter = 0;
-                        }
                         j++;
+                    }
+
+                    if (saving) {
+                        //BTSensorReadingList.add(new SensorReading(comAcc[j],time));
+                        //internalSensorReadingList.add(new SensorReading(IntAngle,IntTimestamp));
+                        anglesResultList.addToBTList(comAcc,BTTimestamp);
                     }
 
                     handler.post(new Runnable() {
@@ -377,6 +380,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
         //IntTimestampView.setText(""+event.timestamp+" ns");
 
         intAll.add(new SensorReading(-IntAngle,IntTimestamp));
+        anglesResultList.addToIntList(-IntAngle,IntTimestamp);
     }
 
     @Override
@@ -398,6 +402,6 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     }
 
     public ArrayList<SensorReading> getIntReadingList() {
-        return internalSensorReadingList;
+        return anglesResultList.getInternalSensorReading();
     }
 }
