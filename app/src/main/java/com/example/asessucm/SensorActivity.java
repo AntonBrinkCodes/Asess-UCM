@@ -19,12 +19,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -135,6 +132,8 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
         saving = true;
         Toast.makeText(this, "Saving started", Toast.LENGTH_SHORT).show();
     }
+
+
 
     @SuppressLint("MissingPermission")
     @Override
@@ -295,7 +294,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                 byte[] data = characteristic.getValue();
                 if (data[0] == MOVESENSE_RESPONSE && data[1] == REQUEST_ID) {
                     startTestBtn.setEnabled(true); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
-
+                    runOnUiThread(()->startTestBtn.setEnabled(true)); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
                     // NB! use length of the array to determine the number of values in this
                     // "packet", the number of values in the packet depends on the frequency set(!)
                     int len = data.length;
@@ -333,23 +332,23 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                         //internalSensorReadingList.add(new SensorReading(IntAngle,IntTimestamp));
                         anglesResultList.addToBTList(comAcc,BTTimestamp);
 
-                        handler.post(new Runnable() {
-                            public void run() {
+                        //handler.post(new Runnable() {
+                           // public void run() {
                                 /**
                                  * This is where we show data to user!
                                  */
-                                graphFragment.addDataPoint(anglesResultList.getLastFourInternal(),
+                                graphFragment.addDataPointBT(anglesResultList.getLength(),
                                         comAcc, anglesResultList.getLength());
                                 //BTTimestampView.setText("" + time + " ms");
                                 //BTAngleView.setText("" + (int) BTAngle);
                             }
-                        });
+                       // });
                     }
 
 
                 }
             }
-        }
+        //}
 
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic
@@ -361,24 +360,25 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     // Internal sensors
     @Override
     public void onSensorChanged(SensorEvent event) {
-        double xGyro = event.values[0]*180/Math.PI;
+        double xGyro = event.values[0] * 180 / Math.PI;
         double yGyro = event.values[1];
         double zGyro = event.values[2];
         IntTimestamp = event.timestamp;
 
-        double dt = 1.0/52.0;
-        IntAngle = IntAngle + dt*xGyro;
+        double dt = 1.0 / 52.0;
+        IntAngle = IntAngle + dt * xGyro;
         //IntAngleView.setText(""+(int) -IntAngle);
         //IntTimestampView.setText(""+event.timestamp+" ns");
 
         if (saving) {
-            if (Double.compare(-IntAngle, anglesResultList.getLastInternal()) > 0) {
-                intAll.add(new SensorReading(-IntAngle,IntTimestamp));
-                anglesResultList.addToIntList(-IntAngle,IntTimestamp);
-            } else {
-                intAll.add(new SensorReading(anglesResultList.getLastInternal(),IntTimestamp));
-                anglesResultList.addToIntList(anglesResultList.getLastInternal(),IntTimestamp);
-            }
+                anglesResultList.addToIntList(-IntAngle, IntTimestamp);
+               // handler.post(new Runnable() {
+                    //@Override
+                    //public void run() {
+                       graphFragment.addDataPointInternal(anglesResultList.getLength(), -IntAngle, anglesResultList.getLength());
+                   // }
+                //});
+
         }
     }
 

@@ -18,6 +18,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 public class GraphFragment extends Fragment {
     private Viewport internalViewport, BTViewport;
     private GraphView internalGraph, BTGraph;
+    int BTCounter = 0;
     private LineGraphSeries<DataPoint> BTseries, internalSeries;
     @Nullable
     @Override
@@ -44,9 +45,9 @@ public class GraphFragment extends Fragment {
         internalViewport.setYAxisBoundsManual(true);
         internalViewport.setXAxisBoundsManual(true);
         internalViewport.setMinX(0);
+        internalViewport.setMaxY(45);
 
-       BTseries = new LineGraphSeries<DataPoint>(new DataPoint[] {
-        });
+       BTseries = new LineGraphSeries<DataPoint>(new DataPoint[] {});
         BTGraph.addSeries(BTseries);
         internalSeries = new LineGraphSeries<DataPoint>(new DataPoint[]{});
         internalGraph.addSeries(internalSeries);
@@ -58,15 +59,18 @@ public class GraphFragment extends Fragment {
      * @param y is the value in the y-axis. Should be acceleration values from Movesense Device.
      *
      */
-    public void addDataPoint(double[] x, double[] y, int pointsPlotted){
+    public void addDataPointBT(double x, double[] y, int pointsPlotted){
         int revCounter = 4;
         for(int i = 0;i<4;i++) {
-
-            Log.i("Graph", "x: " + x[i] + " y: "+ y[i] + " nr of points= " + pointsPlotted);
-            BTseries.appendData(new DataPoint(x[i], y[i]), true, 45);
+            BTseries.appendData(new DataPoint(BTCounter, y[i]), true, pointsPlotted);
             BTViewport.setMaxX(pointsPlotted-revCounter);
-            BTGraph.addSeries(series);
+            BTCounter++;
             revCounter--;
         }
+    }
+
+    public void addDataPointInternal(double x, double y, int pointsPlotted){
+        internalSeries.appendData(new DataPoint(x,y), true, pointsPlotted);
+        internalViewport.setMaxX(pointsPlotted);
     }
 }

@@ -160,6 +160,12 @@ public class BluetoothScanActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+        devices.clear();
+    }
+
     private void initBLE() {
         if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Log.i("BLUETOOTH ERROR", "BLE NOT SUPPORTED");

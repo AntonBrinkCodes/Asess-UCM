@@ -13,5 +13,6 @@ public class SensorReading implements Serializable {
 
     public double getAngle() {
         return this.angle;
+
     }
 }

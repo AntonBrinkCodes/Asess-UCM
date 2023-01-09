@@ -58,11 +58,12 @@ public class SensorResultList implements Serializable {
     }
 
     public double getLastInternal() {
-        if (getLength()>0) {
-            return this.internalSensorReading.get(getLength()-1).angle;
+        if (getLength() > 0) {
+            return this.internalSensorReading.get(getLength() - 1).angle;
         } else {
             return 0;
         }
-    }
 
+
+    }
 }
