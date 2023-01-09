@@ -10,11 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class GraphFragment extends Fragment {
-
+    private Viewport viewport;
     private GraphView graph;
     private LineGraphSeries<DataPoint> series;
     @Nullable
@@ -29,6 +30,9 @@ public class GraphFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         graph = (GraphView) view.findViewById(R.id.graph);
+        viewport = graph.getViewport();
+        viewport.setScrollable(true);
+        viewport.setXAxisBoundsManual(true);
        series = new LineGraphSeries<DataPoint>(new DataPoint[] {
         });
         graph.addSeries(series);
@@ -40,7 +44,13 @@ public class GraphFragment extends Fragment {
      * @param y is the value in the y-axis. Should be acceleration values from Movesense Device.
      *
      */
-    public void addDataPoint(double x, double y){
-
+    public void addDataPoint(double x[], double[] y, int pointsPlotted){
+        int revCounter = 4;
+        for(int i = 0;i<4;i++) {
+            series.appendData(new DataPoint(x[i], y[i]), true, pointsPlotted-revCounter);
+            viewport.setMaxX(pointsPlotted-revCounter);
+            viewport.setMinX(0);
+            revCounter--;
+        }
     }
 }
