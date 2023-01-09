@@ -27,7 +27,6 @@ public class FileHandler {
     static ObjectOutputStream oos;
     FileInputStream fis; //hihi
     ObjectInputStream ois;
-    Context context;
     static String fileName = "results.ser";
     static String fileNameAngles = "angleResults.ser";
     private static final String filehandler_tag = "Filehandler";
@@ -60,7 +59,7 @@ public class FileHandler {
         }
     }
 
-    public SensorResultList loadAnglesResults(){
+    public SensorResultList loadAnglesResults(Context context){
         try {
             fis = context.openFileInput(fileName);
             ois = new ObjectInputStream(fis);
@@ -81,7 +80,7 @@ public class FileHandler {
      * Loads the saved file from saveResults containing a ResultList.
      * @return a ResultList.
      */
-    public List<ResultList> loadResults(){
+    public List<ResultList> loadResults(Context context){
         try {
             fis = context.openFileInput(fileName);
             ois = new ObjectInputStream(fis);
