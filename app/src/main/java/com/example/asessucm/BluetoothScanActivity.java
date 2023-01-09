@@ -37,6 +37,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.asessucm.uiutils.DeviceRecyclerAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,14 +67,13 @@ public class BluetoothScanActivity extends AppCompatActivity {
 
     private BluetoothAdapter bluetoothAdapter;
     private ArrayList<BluetoothDevice> devices;
-    //DeviceRecyclerAdapter deviceRecyclerAdapter;
+    DeviceRecyclerAdapter deviceRecyclerAdapter;
     private boolean scanning = false;
     private Handler handler;
 
     Button scanbtn;
     TextView bluetoothTextView;
     RecyclerView recyclerView;
-    private ImageButton internalSensorBtn, bluetoothBtn;
 
 
     public BluetoothScanActivity() {
@@ -88,53 +89,38 @@ public class BluetoothScanActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-      //  internalSensorBtn = findViewById(R.id.taskABtn);
-        internalSensorBtn.setOnClickListener(this::taskABtn);
-
-      //  bluetoothBtn = findViewById(R.id.taskBBtn);
-        bluetoothBtn.setOnClickListener(this::blueToothBtn);
+        setContentView(R.layout.activity_bluetooth_scan);
 
         devices = new ArrayList<>();
-     //   deviceRecyclerAdapter = new DeviceRecyclerAdapter(devices, this::onDeviceSelected);
+        deviceRecyclerAdapter = new DeviceRecyclerAdapter(devices, this::onDeviceSelected);
         handler = new Handler();
 
 
-       // scanbtn = (Button) findViewById(R.id.scanBtn);
+        scanbtn = (Button) findViewById(R.id.scanBtn);
         scanbtn.setOnClickListener(this::scanBtn);
 
-      //  recyclerView = findViewById(R.id.devices_view);
+        recyclerView = findViewById(R.id.devices_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-      //  recyclerView.setLayoutManager(layoutManager);
-      //  recyclerView.setAdapter(deviceRecyclerAdapter);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(deviceRecyclerAdapter);
 
-      //  bluetoothTextView = (TextView) findViewById(R.id.BluetoothTextView);
+        bluetoothTextView = (TextView) findViewById(R.id.BluetoothTextView);
     }
 
-    private void blueToothBtn(View view) {
-        Toast.makeText(this, "You are already here!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void taskABtn(View view) {
-       // Intent intentInternalSensor = new Intent(BluetoothScanActivity.this, InternalSensorActivity.class);
-       // startActivity(intentInternalSensor);
-        finish();
-    }
 
     private void onDeviceSelected(int position) {
         BluetoothDevice selectedDevice = devices.get(position);
 
-       // Intent intent = new Intent(BluetoothScanActivity.this, DeviceActivity.class);
-       // intent.putExtra(SELECTED_DEVICE, selectedDevice);
-        //startActivity(intent);
+        Intent intent = new Intent(BluetoothScanActivity.this, QuestionnaireActivity.class);
+        intent.putExtra(SELECTED_DEVICE, selectedDevice);
+        startActivity(intent);
     }
 
 
 
     private void scanBtn(View view) {
         devices.clear();
-        //deviceRecyclerAdapter.notifyDataSetChanged();
+        deviceRecyclerAdapter.notifyDataSetChanged();
         final BluetoothLeScanner scanner = bluetoothAdapter.getBluetoothLeScanner();
         if (!scanning) {
             //Stop scanning after 5 seconds.
@@ -202,7 +188,7 @@ public class BluetoothScanActivity extends AppCompatActivity {
                     Log.i("BLUETOOTH", "SEARCHING...");
                     if (name != null && name.contains(MOVESENSE) && !devices.contains(device)) {
                         devices.add(device);
-                        //deviceRecyclerAdapter.notifyDataSetChanged();
+                        deviceRecyclerAdapter.notifyDataSetChanged();
                         Log.i("BLUETOOTH", "Found device!: " + name);
                     } else if (name!=null){
                         Log.i("BLUETOOTH", name);

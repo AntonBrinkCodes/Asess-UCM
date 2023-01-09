@@ -29,7 +29,7 @@ public class FileHandler {
     ObjectInputStream ois;
     Context context;
     static String fileName = "results.ser";
-    static String fileNameAngles = "angleResults.ser"
+    static String fileNameAngles = "angleResults.ser";
     private static final String filehandler_tag = "Filehandler";
 
     /**

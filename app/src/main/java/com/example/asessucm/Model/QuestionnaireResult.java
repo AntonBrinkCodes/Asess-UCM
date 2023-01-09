@@ -8,7 +8,8 @@ import java.util.Date;
  * ... Maybe should be int and not float...
  */
 public class QuestionnaireResult {
-    private float score, scoreDelta;
+    private float score;
+    private float scoreDelta = 0;
     private Date date;
 
     public QuestionnaireResult(float score) {

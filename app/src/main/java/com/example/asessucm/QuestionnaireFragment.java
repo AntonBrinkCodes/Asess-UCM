@@ -7,16 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.material.slider.Slider;
 
-public class QuestionnaireFragment extends Fragment implements SeekBar.OnSeekBarChangeListener{
+
+public class QuestionnaireFragment extends Fragment implements Slider.OnSliderTouchListener{
     private SeekBar[] seekBars = new SeekBar[13];
+    private Slider[] sliders = new Slider[13];
     private int result;
+    private TextView[] progressTextViews = new TextView[13];
 
     @Nullable
     @Override
@@ -32,39 +37,34 @@ public class QuestionnaireFragment extends Fragment implements SeekBar.OnSeekBar
         Resources r = view.getResources();
         String name = view.getContext().getPackageName();
         int[] cardIds = new int[13];
-        seekBars[0] = view.findViewById(R.id.seekBar_1);
         for(int i = 0; i<13;i++){
             //Log.i("QuestionnaireFragment", String.valueOf(name));
             cardIds[i] = r.getIdentifier("seekBar_" +(i+1), "id", name);
             //Log.i("QuestionnaireFragment", "seekBar_" + (i + 1));
-            seekBars[i] = view.findViewById(cardIds[i]);
-            if(seekBars[i] !=null) {
-                seekBars[i].setOnSeekBarChangeListener(this);
+            sliders[i] = view.findViewById(cardIds[i]);
+            if(sliders[i] !=null) {
+                sliders[i].addOnSliderTouchListener(this);
             }
         }
     }
 
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-    //TODO: Maybe hook this to some textView or similar to show current progress.
-    }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        this.result = 0;
-        for(int i = 0;i<13;i++){
-            result +=seekBars[i].getProgress();
-        }
-
-    }
 
     public int getResult() {
         return result;
+    }
+
+    @Override
+    public void onStartTrackingTouch(@NonNull Slider slider) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(@NonNull Slider slider) {
+        this.result = 0;
+        for(int i = 0;i<13;i++){
+            result +=sliders[i].getValue();
+        }
     }
 }
