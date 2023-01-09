@@ -15,7 +15,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class GraphFragment extends Fragment {
 
-    GraphView graph;
+    private GraphView graph;
+    private LineGraphSeries<DataPoint> series;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -28,13 +29,18 @@ public class GraphFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         graph = (GraphView) view.findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
+       series = new LineGraphSeries<DataPoint>(new DataPoint[] {
         });
         graph.addSeries(series);
+    }
+
+    /**
+     * Adds a new datapoint to the graph
+     * @param x is the value in the x-axis. Should be shoulder angle from internal sensors
+     * @param y is the value in the y-axis. Should be acceleration values from Movesense Device.
+     *
+     */
+    public void addDataPoint(double x, double y){
+
     }
 }
