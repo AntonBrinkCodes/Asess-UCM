@@ -33,4 +33,28 @@ public class SensorResultList implements Serializable {
     public void setBTSensorReading(ArrayList<SensorReading> BTSensorReading) {
         this.BTSensorReading = BTSensorReading;
     }
+
+    public void addToBTList(double[] newValues, double timestamp){
+        for(double value:newValues){
+            this.BTSensorReading.add(new SensorReading(value, timestamp));
+        }
+    }
+
+    public void addToIntList(double value, double timestamp){
+            this.internalSensorReading.add(new SensorReading(value, timestamp));
+
+    }
+
+    public double[] getLastFourInternal(){
+        double[] readings = new double[4];
+        for(int i = 0;i<4;i++){
+            readings[i] = this.internalSensorReading.indexOf(getLength()-(i+1));
+        }
+        return readings;
+    }
+
+    public int getLength(){
+        return this.internalSensorReading.size();
+    }
+
 }

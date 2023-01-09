@@ -44,7 +44,7 @@ public class GraphFragment extends Fragment {
      * @param y is the value in the y-axis. Should be acceleration values from Movesense Device.
      *
      */
-    public void addDataPoint(double x[], double[] y, int pointsPlotted){
+    public void addDataPoint(double[] x, double[] y, int pointsPlotted){
         int revCounter = 4;
         for(int i = 0;i<4;i++) {
             series.appendData(new DataPoint(x[i], y[i]), true, pointsPlotted-revCounter);
