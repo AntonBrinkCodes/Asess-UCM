@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -78,6 +79,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
 
     //UI
     //TextView BTAngleView,IntAngleView,BTTimestampView,IntTimestampView,deviceView;
+    AppCompatButton startTestBtn;
 
     private String INT_TAG = "InternalSensor";
     private String BT_TAG = "BTSensor";
@@ -94,6 +96,12 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sensor);
+
+        startTestBtn = findViewById(R.id.start_test_btn);
+        startTestBtn.setOnClickListener(this::startTestBtn);
+        startTestBtn.setActivated(false);
+
+
         Intent intent = getIntent();
         selectedDevice = intent.getParcelableExtra(BluetoothScanActivity.SELECTED_DEVICE);
 
@@ -120,6 +128,12 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
         internalSensorReadingList = new ArrayList<>();
         BTSensorReadingList = new ArrayList<>();
         fileHandler = new FileHandler();
+
+
+    }
+
+    private void startTestBtn(View view) {
+
     }
 
     private void startSaving(View view) {
@@ -290,6 +304,8 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
             if (MOVESENSE_2_0_DATA_CHARACTERISTIC.equals(characteristic.getUuid())) {
                 byte[] data = characteristic.getValue();
                 if (data[0] == MOVESENSE_RESPONSE && data[1] == REQUEST_ID) {
+                    startTestBtn.setActivated(true); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
+
                     // NB! use length of the array to determine the number of values in this
                     // "packet", the number of values in the packet depends on the frequency set(!)
                     int len = data.length;
