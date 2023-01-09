@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/connect_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:text="1. Press CONNECT button and choose your sensor. \n2. Attach the sensor on your scapula. \n3.Press START TEST and perform test.\n4.Press STOP TEST when you're done."
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/connect_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/info_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:text="Connect"
+        android:textSize="30dp"
+        android:layout_marginTop="20sp"
+
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
