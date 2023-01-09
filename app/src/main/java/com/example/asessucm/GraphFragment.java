@@ -16,9 +16,9 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class GraphFragment extends Fragment {
-    private Viewport viewport;
-    private GraphView graph;
-    private LineGraphSeries<DataPoint> series;
+    private Viewport internalViewport, BTViewport;
+    private GraphView internalGraph, BTGraph;
+    private LineGraphSeries<DataPoint> BTseries, internalSeries;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -30,14 +30,26 @@ public class GraphFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        graph = (GraphView) view.findViewById(R.id.graph);
-        viewport = graph.getViewport();
-        viewport.setScrollable(true);
-        viewport.setXAxisBoundsManual(true);
-        viewport.setYAxisBoundsManual(true);
-       series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+
+        BTGraph = (GraphView) view.findViewById(R.id.bt_graph);
+        internalGraph = (GraphView) view.findViewById(R.id.internal_graph) ;
+        BTViewport = BTGraph.getViewport();
+        BTViewport.setScrollable(true);
+        BTViewport.setYAxisBoundsManual(true);
+        BTViewport.setXAxisBoundsManual(true);
+        BTViewport.setMinX(0);
+
+        internalViewport = internalGraph.getViewport();
+        internalViewport.setScrollable(true);
+        internalViewport.setYAxisBoundsManual(true);
+        internalViewport.setXAxisBoundsManual(true);
+        internalViewport.setMinX(0);
+
+       BTseries = new LineGraphSeries<DataPoint>(new DataPoint[] {
         });
-        graph.addSeries(series);
+        BTGraph.addSeries(BTseries);
+        internalSeries = new LineGraphSeries<DataPoint>(new DataPoint[]{});
+        internalGraph.addSeries(internalSeries);
     }
 
     /**
@@ -49,10 +61,11 @@ public class GraphFragment extends Fragment {
     public void addDataPoint(double[] x, double[] y, int pointsPlotted){
         int revCounter = 4;
         for(int i = 0;i<4;i++) {
-            Log.i("Graph","x: "+x[i]+" y: "+y[i]+" pointsplotted: "+pointsPlotted);
-            series.appendData(new DataPoint(x[i], y[i]), true, pointsPlotted-revCounter);
-            viewport.setMaxX(pointsPlotted-revCounter);
-            viewport.setMinX(0);
+
+            Log.i("Graph", "x: " + x[i] + " y: "+ y[i] + " nr of points= " + pointsPlotted);
+            BTseries.appendData(new DataPoint(x[i], y[i]), true, 45);
+            BTViewport.setMaxX(pointsPlotted-revCounter);
+            BTGraph.addSeries(series);
             revCounter--;
         }
     }
