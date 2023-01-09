@@ -48,13 +48,21 @@ public class SensorResultList implements Serializable {
     public double[] getLastFourInternal(){
         double[] readings = new double[4];
         for(int i = 0;i<4;i++){
-            readings[i] = this.internalSensorReading.indexOf(getLength()-(i+1));
+            readings[i] = this.internalSensorReading.get(getLength()-(i+1)).angle;
         }
         return readings;
     }
 
     public int getLength(){
         return this.internalSensorReading.size();
+    }
+
+    public double getLastInternal() {
+        if (getLength()>0) {
+            return this.internalSensorReading.get(getLength()-1).angle;
+        } else {
+            return 0;
+        }
     }
 
 }

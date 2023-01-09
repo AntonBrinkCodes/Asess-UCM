@@ -6,8 +6,15 @@
 
     <com.jjoe64.graphview.GraphView
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/internal_graph"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/graph" />
+        android:layout_height="300dp"
+        android:id="@+id/bt_graph" />
+
+    <com.jjoe64.graphview.GraphView
+        app:layout_constraintTop_toBottomOf="@id/bt_graph"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/internal_graph" />
+    
 </androidx.constraintlayout.widget.ConstraintLayout>

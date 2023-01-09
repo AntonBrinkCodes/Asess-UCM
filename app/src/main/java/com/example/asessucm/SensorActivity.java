@@ -99,7 +99,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
 
         startTestBtn = findViewById(R.id.start_test_btn);
         startTestBtn.setOnClickListener(this::startTestBtn);
-        startTestBtn.setActivated(false);
+        startTestBtn.setEnabled(false);
 
 
         Intent intent = getIntent();
@@ -129,22 +129,11 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
         //BTSensorReadingList = new ArrayList<>();
         anglesResultList = new SensorResultList();
         fileHandler = new FileHandler();
-
-
     }
 
     private void startTestBtn(View view) {
-
-    }
-
-    private void startSaving(View view) {
         saving = true;
         Toast.makeText(this, "Saving started", Toast.LENGTH_SHORT).show();
-    }
-
-    private void stopSaving(View view) {
-        saving = false;
-        Toast.makeText(this, "Saving stopped", Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("MissingPermission")
@@ -305,7 +294,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
             if (MOVESENSE_2_0_DATA_CHARACTERISTIC.equals(characteristic.getUuid())) {
                 byte[] data = characteristic.getValue();
                 if (data[0] == MOVESENSE_RESPONSE && data[1] == REQUEST_ID) {
-                    startTestBtn.setActivated(true); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
+                    startTestBtn.setEnabled(true); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
 
                     // NB! use length of the array to determine the number of values in this
                     // "packet", the number of values in the packet depends on the frequency set(!)
@@ -382,8 +371,15 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
         //IntAngleView.setText(""+(int) -IntAngle);
         //IntTimestampView.setText(""+event.timestamp+" ns");
 
-        intAll.add(new SensorReading(-IntAngle,IntTimestamp));
-        anglesResultList.addToIntList(-IntAngle,IntTimestamp);
+        if (saving) {
+            if (Double.compare(-IntAngle, anglesResultList.getLastInternal()) > 0) {
+                intAll.add(new SensorReading(-IntAngle,IntTimestamp));
+                anglesResultList.addToIntList(-IntAngle,IntTimestamp);
+            } else {
+                intAll.add(new SensorReading(anglesResultList.getLastInternal(),IntTimestamp));
+                anglesResultList.addToIntList(anglesResultList.getLastInternal(),IntTimestamp);
+            }
+        }
     }
 
     @Override

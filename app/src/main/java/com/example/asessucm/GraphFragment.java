@@ -1,6 +1,7 @@
 package com.example.asessucm;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class GraphFragment extends Fragment {
         viewport = graph.getViewport();
         viewport.setScrollable(true);
         viewport.setXAxisBoundsManual(true);
+        viewport.setYAxisBoundsManual(true);
        series = new LineGraphSeries<DataPoint>(new DataPoint[] {
         });
         graph.addSeries(series);
@@ -47,6 +49,7 @@ public class GraphFragment extends Fragment {
     public void addDataPoint(double[] x, double[] y, int pointsPlotted){
         int revCounter = 4;
         for(int i = 0;i<4;i++) {
+            Log.i("Graph","x: "+x[i]+" y: "+y[i]+" pointsplotted: "+pointsPlotted);
             series.appendData(new DataPoint(x[i], y[i]), true, pointsPlotted-revCounter);
             viewport.setMaxX(pointsPlotted-revCounter);
             viewport.setMinX(0);

@@ -10,4 +10,8 @@ public class SensorReading implements Serializable {
         this.angle = angle;
         this.timestamp = timestamp;
     }
+
+    public double getAngle() {
+        return this.angle;
+    }
 }
