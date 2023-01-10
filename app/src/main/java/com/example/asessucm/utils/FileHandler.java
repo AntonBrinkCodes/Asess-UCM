@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.example.asessucm.Model.ResultItem;
 import com.example.asessucm.Model.ResultList;
 import com.example.asessucm.Model.SensorResultList;
 import com.google.gson.Gson;
@@ -35,7 +36,7 @@ public class FileHandler {
      * Saves results to a private .ser file called "results.ser".
      * @param resultLists List of results to be saved.
      */
-    public static void saveResults(List<ResultList> resultLists, Context context){
+    public static void saveResults(List<ResultItem> resultLists, Context context){
         try{
             fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
@@ -80,12 +81,12 @@ public class FileHandler {
      * Loads the saved file from saveResults containing a ResultList.
      * @return a ResultList.
      */
-    public List<ResultList> loadResults(Context context){
+    public List<ResultItem> loadResults(Context context){
         try {
             fis = context.openFileInput(fileName);
             ois = new ObjectInputStream(fis);
             Log.i(filehandler_tag,"Loaded file");
-            List<ResultList> tmp = (List<ResultList>)ois.readObject();
+            List<ResultItem> tmp = (List<ResultItem>)ois.readObject();
             ois.close();
             return tmp;
         } catch (ClassNotFoundException | IOException e) {

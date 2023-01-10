@@ -5,7 +5,6 @@ package com.example.asessucm;
  * Updated with currently 2012-12-14 non-deprecated methods to get permissions :)
  */
 
-//TODO: I REMOVED EVERYTHING THAT MAKES THIS NOT WORK. WHICH IS VIEW STUFF MISSING FROM MY OLD LAB
 
 import android.Manifest;
 import android.annotation.SuppressLint;
