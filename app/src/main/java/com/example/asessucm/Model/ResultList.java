@@ -10,22 +10,23 @@ import java.util.ArrayList;
  */
 public class ResultList implements Serializable {
 
-    private ArrayList<QuestionnaireResult> resultList;
-    private ArrayList<SensorResultList> sensorResultLists;
-
-    public ResultList(ArrayList<QuestionnaireResult> resultList) {
-        this.resultList = resultList;
-    }
-
+    private ArrayList<ResultItem> results;
     public ResultList(){
-        this.resultList = new ArrayList<>();
+        this.results = new ArrayList<>();
+    }
+    public ResultList(ArrayList<ResultItem> results) {
+        this.results = results;
     }
 
-    public ArrayList<QuestionnaireResult> getResultList() {
-        return resultList;
+    public void add(ResultItem result){
+        results.add(result);
     }
 
-    public void setResultList(ArrayList<QuestionnaireResult> resultList) {
-        this.resultList = resultList;
+    public ArrayList<ResultItem> getResults() {
+        return results;
+    }
+
+    public void setResults(ArrayList<ResultItem> results) {
+        this.results = results;
     }
 }

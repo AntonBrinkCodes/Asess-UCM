@@ -11,7 +11,7 @@ public class DateCleaner {
 
     /**
      *
-     * @param OGValidTime a time in formet 'yyyy-MM-dd'. UGLY!
+     * @param OGValidTime a time in format 'yyyy-MM-dd'. UGLY!
      * @return a cleaned up timestamp that's more easy to read.
      * @throws ParseException
      */
@@ -23,5 +23,12 @@ public class DateCleaner {
         simpleDateFormat.applyPattern(newFormat);
         Log.i("cleaned Time stamp: ",simpleDateFormat.format(validDate) + " "+ OGValidTime.substring(11,16));
         return simpleDateFormat.format(validDate) + " "+ OGValidTime.substring(11,16);
+    }
+
+    public static String cleanDateFormat(Date date){
+        String format = "EEEE\nMMM d";
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+
+        return simpleDateFormat.format(date);
     }
 }

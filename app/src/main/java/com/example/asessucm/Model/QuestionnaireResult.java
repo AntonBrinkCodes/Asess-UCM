@@ -15,6 +15,7 @@ public class QuestionnaireResult {
     public QuestionnaireResult(float score) {
         this.score = score;
         this.date = new Date();
+
     }
 
     public QuestionnaireResult(float score, Date date) {
@@ -38,7 +39,11 @@ public class QuestionnaireResult {
         this.scoreDelta = scoreDelta;
     }
 
-   public boolean checkScoreDelta(float nextDelta){
-       return this.scoreDelta - nextDelta > 13;
+   public boolean checkScoreDelta(float nextScore){
+       return this.score - nextScore > 13;
    }
+
+    public Date getDate() {
+        return date;
+    }
 }

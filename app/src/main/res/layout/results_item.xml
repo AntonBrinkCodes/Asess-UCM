@@ -31,6 +31,17 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"/>
 
+            <TextView
+                android:id="@+id/UCM_Textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="No Ucm!"
+                android:layout_marginEnd="10dp"
+                android:layout_toLeftOf="@id/sensor_result_image"/>
+
+
+
             <ImageView
                 android:id="@+id/questionnaire_result_image"
                 android:layout_width="wrap_content"
@@ -38,7 +49,7 @@
 
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_baseline_arrow_upward_24" />
+                app:srcCompat="@drawable/ic_baseline_sentiment_neutral_24" />
 
             <ImageView
                 android:id="@+id/sensor_result_image"
@@ -47,7 +58,7 @@
                 android:layout_toLeftOf="@id/questionnaire_result_image"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
-                app:srcCompat="@android:drawable/alert_light_frame" />
+                app:srcCompat="@drawable/ucm_image_green" />
 
 
         </RelativeLayout>
