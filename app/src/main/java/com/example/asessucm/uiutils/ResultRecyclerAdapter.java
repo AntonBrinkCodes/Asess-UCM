@@ -60,7 +60,10 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<ResultRecyclerAd
         if(angle == 0){
             return "No Ucm!";
         }
-        else return "Angle at: "+angle+" degrees!";
+        else{
+            String angleString = String.format("%.2f", angle);
+            return "UCM happened at: "+angleString+" degrees!";
+        }
     }
 
     private int setQuestImage(float scoreDelta) {

@@ -16,7 +16,6 @@ public class QuestionnaireResult implements Serializable {
     public QuestionnaireResult(float score) {
         this.score = score;
         this.date = new Date();
-
     }
 
     public QuestionnaireResult(float score, Date date) {

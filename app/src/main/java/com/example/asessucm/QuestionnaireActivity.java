@@ -70,7 +70,10 @@ public class QuestionnaireActivity extends FragmentActivity {
         float questionnaireScore = questionnaireFragment.getResult();
         QuestionnaireResult questionnaireResult = new QuestionnaireResult(questionnaireScore);
         if(results.size()>0){
+            Log.i("QuestionnaireActivity", "previous score is" + results.get(results.size()-1).getQuestionnaireResult().getScore());
+            Log.i("QuestionnaireActivity", "This score was: "+questionnaireScore);
             float scoreDelta = questionnaireScore - results.get(results.size()-1).getQuestionnaireResult().getScore();
+            Log.i("QuestionnaireActivity", "Score delta is: "+scoreDelta);
             questionnaireResult.setScoreDelta(scoreDelta);
         }
 

@@ -52,7 +52,7 @@ public class QuestionnaireFragment extends Fragment implements Slider.OnSliderTo
 
 
     public float getResult() {
-        return result/13;
+        return result*100/13;
     }
 
     @Override

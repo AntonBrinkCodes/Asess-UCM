@@ -43,6 +43,7 @@ public class FileHandler {
             oos.writeObject(resultLists);
             oos.close();
             Log.i(filehandler_tag, "saved file");
+            Log.i(filehandler_tag, "nr of items is: "+resultLists.size());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -88,6 +89,8 @@ public class FileHandler {
             Log.i(filehandler_tag,"Loaded file");
             List<ResultItem> tmp = (List<ResultItem>)ois.readObject();
             ois.close();
+            Log.i(filehandler_tag, "nr of loaded items is"+tmp.size());
+
             return tmp;
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
