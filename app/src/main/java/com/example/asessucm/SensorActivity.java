@@ -298,7 +298,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
             if (MOVESENSE_2_0_DATA_CHARACTERISTIC.equals(characteristic.getUuid())) {
                 byte[] data = characteristic.getValue();
                 if (data[0] == MOVESENSE_RESPONSE && data[1] == REQUEST_ID) {
-                    startTestBtn.setEnabled(true); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
+                    //startTestBtn.setEnabled(true); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
                     runOnUiThread(()->startTestBtn.setEnabled(true)); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
                     // NB! use length of the array to determine the number of values in this
                     // "packet", the number of values in the packet depends on the frequency set(!)
@@ -376,25 +376,32 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
         double F = 0.98;
         IntAngle = IntAngle + dt * xGyro;
         IntAngle = IntAngle*F + prevIntAngle*(1-F);
-        //IntAngleView.setText(""+(int) -IntAngle);
-        //IntTimestampView.setText(""+event.timestamp+" ns");
-        Log.i(INT_TAG,"gyroAngle: "+Math.abs(IntAngle));
 
         if (saving) {
-            if (Math.abs(IntAngle)<45) {
-                anglesResultList.addToIntList(IntAngle-offset);
-                Log.i(INT_TAG,"angle-offset: "+(IntAngle-offset));
+            if (Math.abs(IntAngle-offset)<45) {
+                if (prevIntAngle<IntAngle) {
+                    anglesResultList.addToIntList(Math.abs(IntAngle-offset));
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            graphFragment.addDataPointInternal(anglesResultList.getLength(), Math.abs(IntAngle-offset), anglesResultList.getLength());
+                        }
+                    });
+                } else {
+                    anglesResultList.addToIntList(Math.abs(prevIntAngle-offset));
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            graphFragment.addDataPointInternal(anglesResultList.getLength(), Math.abs(prevIntAngle-offset), anglesResultList.getLength());
+                        }
+                    });
+                }
+                Log.i(INT_TAG,"angle-offset: "+anglesResultList.getLastInternal());
+                Log.i(INT_TAG,"\nintlistsize: "+anglesResultList.getInternalSensorReading().size()+"\nbtlistsize: "+anglesResultList.getBTSensorReading().size());
             } else {
+                Log.i(INT_TAG,"Saving stopped");
                 saving = false;
             }
-               // handler.post(new Runnable() {
-                    //@Override
-                    //public void run() {
-                      // graphFragment.addDataPointInternal(anglesResultList.getLength(), -IntAngle, anglesResultList.getLength());
-                   // }
-                //});
-
-
         } else {
             int i = 0;
             double[] calibrate = new double[52];
@@ -428,9 +435,5 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     protected void onPause() {
         super.onPause();
         //sensorManager.unregisterListener(this);
-    }
-
-    public ArrayList<SensorReading> getIntReadingList() {
-        return anglesResultList.getInternalSensorReading();
     }
 }

@@ -31,24 +31,27 @@ public class GraphFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
+        /*
         BTGraph = (GraphView) view.findViewById(R.id.bt_graph);
-        internalGraph = (GraphView) view.findViewById(R.id.internal_graph) ;
         BTViewport = BTGraph.getViewport();
         BTViewport.setScrollable(true);
         BTViewport.setYAxisBoundsManual(true);
         BTViewport.setXAxisBoundsManual(true);
         BTViewport.setMinX(0);
+         */
 
+        internalGraph = (GraphView) view.findViewById(R.id.internal_graph);
         internalViewport = internalGraph.getViewport();
         internalViewport.setScrollable(true);
         internalViewport.setYAxisBoundsManual(true);
         internalViewport.setXAxisBoundsManual(true);
         internalViewport.setMinX(0);
-        internalViewport.setMaxY(45);
+        internalViewport.setMaxY(50);
 
+        /*
        BTseries = new LineGraphSeries<DataPoint>(new DataPoint[] {});
         BTGraph.addSeries(BTseries);
+         */
         internalSeries = new LineGraphSeries<DataPoint>(new DataPoint[]{});
         internalGraph.addSeries(internalSeries);
     }
