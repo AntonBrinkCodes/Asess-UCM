@@ -4,11 +4,9 @@ import java.io.Serializable;
 
 public class SensorReading implements Serializable {
     double angle;
-    double timestamp;
 
-    public SensorReading(double angle, double timestamp) {
+    public SensorReading(double angle) {
         this.angle = angle;
-        this.timestamp = timestamp;
     }
 
     public double getAngle() {

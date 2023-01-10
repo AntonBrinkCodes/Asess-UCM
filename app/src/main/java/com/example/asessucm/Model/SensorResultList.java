@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class SensorResultList implements Serializable {
     private ArrayList<SensorReading> internalSensorReading;
     private ArrayList<SensorReading> BTSensorReading;
+    private boolean UCM = false;
 
     public SensorResultList(ArrayList<SensorReading> internalSensorReading, ArrayList<SensorReading> BTSensorReading) {
         this.internalSensorReading = internalSensorReading;
@@ -34,14 +35,22 @@ public class SensorResultList implements Serializable {
         this.BTSensorReading = BTSensorReading;
     }
 
-    public void addToBTList(double[] newValues, double timestamp){
+    public boolean getUCM() {
+        return UCM;
+    }
+
+    public void setUCM(boolean UCM) {
+        this.UCM = UCM;
+    }
+
+    public void addToBTList(double[] newValues){
         for(double value:newValues){
-            this.BTSensorReading.add(new SensorReading(value, timestamp));
+            this.BTSensorReading.add(new SensorReading(value));
         }
     }
 
-    public void addToIntList(double value, double timestamp){
-            this.internalSensorReading.add(new SensorReading(value, timestamp));
+    public void addToIntList(double value){
+            this.internalSensorReading.add(new SensorReading(value));
 
     }
 

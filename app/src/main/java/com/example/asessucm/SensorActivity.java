@@ -57,8 +57,9 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
 
     // Internal sensors
     SensorManager sensorManager;
-    Sensor sensor;
+    Sensor gyroSensor;
     private int samplingRate = 19231;
+    double offset = 0.0;
 
     // Saving
     //ArrayList<SensorReading> internalSensorReadingList = new ArrayList<>();
@@ -118,7 +119,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
         }
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        gyroSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
         handler = new Handler();
 
@@ -139,6 +140,10 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     @Override
     protected void onStart() {
         super.onStart();
+        if (gyroSensor!=null) {
+            sensorManager.registerListener(this,gyroSensor,samplingRate);
+        }
+
         if (selectedDevice != null) {
             // Connect and register call backs for bluetooth gatt
             bluetoothGatt =
@@ -322,7 +327,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                         accZ[j] = TypeConverter.fourBytesToFloat(data, i+8);
                         comAcc[j] = Math.sqrt(Math.pow(accX[j],2)+Math.pow(accY[j],2)+Math.pow(accZ[j],2))-9.81;
 
-                        BTAll.add(new SensorReading(comAcc[j],time));
+                        BTAll.add(new SensorReading(comAcc[j]));
                         //intAll.add(new SensorReading(IntAngle,IntTimestamp));
                         j++;
                     }
@@ -330,15 +335,15 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                     if (saving) {
                         //BTSensorReadingList.add(new SensorReading(comAcc[j],time));
                         //internalSensorReadingList.add(new SensorReading(IntAngle,IntTimestamp));
-                        anglesResultList.addToBTList(comAcc,BTTimestamp);
+                        anglesResultList.addToBTList(comAcc);
 
                         //handler.post(new Runnable() {
                            // public void run() {
                                 /**
                                  * This is where we show data to user!
                                  */
-                                graphFragment.addDataPointBT(anglesResultList.getLength(),
-                                        comAcc, anglesResultList.getLength());
+                                //graphFragment.addDataPointBT(anglesResultList.getLength(),
+                                       // comAcc, anglesResultList.getLength());
                                 //BTTimestampView.setText("" + time + " ms");
                                 //BTAngleView.setText("" + (int) BTAngle);
                             }
@@ -365,20 +370,45 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
         double zGyro = event.values[2];
         IntTimestamp = event.timestamp;
 
+        double prevIntAngle = IntAngle;
+
         double dt = 1.0 / 52.0;
+        double F = 0.98;
         IntAngle = IntAngle + dt * xGyro;
+        IntAngle = IntAngle*F + prevIntAngle*(1-F);
         //IntAngleView.setText(""+(int) -IntAngle);
         //IntTimestampView.setText(""+event.timestamp+" ns");
+        Log.i(INT_TAG,"gyroAngle: "+Math.abs(IntAngle));
 
         if (saving) {
-                anglesResultList.addToIntList(-IntAngle, IntTimestamp);
+            if (Math.abs(IntAngle)<45) {
+                anglesResultList.addToIntList(IntAngle-offset);
+                Log.i(INT_TAG,"angle-offset: "+(IntAngle-offset));
+            } else {
+                saving = false;
+            }
                // handler.post(new Runnable() {
                     //@Override
                     //public void run() {
-                       graphFragment.addDataPointInternal(anglesResultList.getLength(), -IntAngle, anglesResultList.getLength());
+                      // graphFragment.addDataPointInternal(anglesResultList.getLength(), -IntAngle, anglesResultList.getLength());
                    // }
                 //});
 
+
+        } else {
+            int i = 0;
+            double[] calibrate = new double[52];
+            if (calibrate.length<52) {
+                calibrate[i] = IntAngle;
+                i++;
+            } else {
+                double arraySum = 0;
+                for(int j=0;j<calibrate.length;j++) {
+                    arraySum = arraySum+calibrate[j];
+                }
+                offset = arraySum/calibrate.length;
+                i = 0;
+            }
         }
     }
 
@@ -391,13 +421,13 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this,sensor,samplingRate);
+        //sensorManager.registerListener(this,accSensor,samplingRate);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
+        //sensorManager.unregisterListener(this);
     }
 
     public ArrayList<SensorReading> getIntReadingList() {
