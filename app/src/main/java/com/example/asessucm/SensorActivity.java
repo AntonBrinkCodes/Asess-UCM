@@ -29,6 +29,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.asessucm.Model.SensorReading;
 import com.example.asessucm.Model.SensorResultList;
 import com.example.asessucm.uiutils.MsgUtils;
+import com.example.asessucm.uiutils.NoticeDialogFragment;
 import com.example.asessucm.utils.FileHandler;
 import com.example.asessucm.utils.TypeConverter;
 
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SensorActivity extends FragmentActivity implements SensorEventListener {
+public class SensorActivity extends FragmentActivity implements SensorEventListener, NoticeDialogFragment.NoticeDialogListener {
     // Movesense 2.0 UUIDs (should be placed in resources file)
     public static final UUID MOVESENSE_2_0_SERVICE =
             UUID.fromString("34802252-7185-4d5d-b431-630e7050e8f0");
@@ -71,6 +72,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     double comAcc3 = 0;
     double IntAngle = 0;
     float IntTimestamp,BTTimestamp;
+    private double UCMThreshold = 0.3;
     int counter = 0;
     boolean saving = false;
     private String SAVE_TAG = "Saving";
@@ -78,6 +80,9 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     //UI
     //TextView BTAngleView,IntAngleView,BTTimestampView,IntTimestampView,deviceView;
     AppCompatButton startTestBtn;
+
+    private String[] dialogString = new String[]{"Test done", "Do you want to continue and answer a questionnaire and save result?","No","Yes"};
+
 
     private String INT_TAG = "InternalSensor";
     private String BT_TAG = "BTSensor";
@@ -155,11 +160,8 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     @Override
     protected void onStop() {
         super.onStop();
-        //anglesResultList = new SensorResultList(internalSensorReadingList,BTSensorReadingList);
-        fileHandler.saveAnglesResults(anglesResultList,this);
         if (bluetoothGatt != null) {
             bluetoothGatt.disconnect();
-            SensorResultList list = fileHandler.loadAnglesResults(this);
             try {
                 bluetoothGatt.close();
             } catch (Exception e) {
@@ -342,18 +344,12 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                         //BTSensorReadingList.add(new SensorReading(comAcc[j],time));
                         //internalSensorReadingList.add(new SensorReading(IntAngle,IntTimestamp));
                         anglesResultList.addToBTList(comAcc);
-
-                        //handler.post(new Runnable() {
-                           // public void run() {
-                                /**
-                                 * This is where we show data to user!
-                                 */
-                                //graphFragment.addDataPointBT(anglesResultList.getLength(),
-                                       // comAcc, anglesResultList.getLength());
-                                //BTTimestampView.setText("" + time + " ms");
-                                //BTAngleView.setText("" + (int) BTAngle);
+                        for(int i = 0; i<4;i++){
+                            if(comAcc[i]>UCMThreshold){
+                                anglesResultList.setUCM(true);
                             }
-                       // });
+                        }
+                            }
                     }
 
 
@@ -407,6 +403,13 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
             } else {
                 Log.i(INT_TAG,"Saving stopped");
                 saving = false;
+                /**
+                 * We stop test here
+                 * Should show dialog asking to do questionnaire.
+                 * If user clicks yes -> save angles and open questionnaire activity.
+                 */
+                NoticeDialogFragment dialog = new NoticeDialogFragment(dialogString);
+                dialog.show(getSupportFragmentManager(), "dialog");
             }
         } else {
             int i = 0;
@@ -441,5 +444,22 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     protected void onPause() {
         super.onPause();
         //sensorManager.unregisterListener(this);
+    }
+
+    /**
+     * Implementation for dialog
+     * */
+    @Override
+    public void onDialogPositiveClick() {
+        FileHandler.saveAnglesResults(anglesResultList, this);
+        Intent intent = new Intent(SensorActivity.this, QuestionnaireActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
+    @Override
+    public void onDialogNegativeClick() {
+        //Do nothing, only close!
     }
 }

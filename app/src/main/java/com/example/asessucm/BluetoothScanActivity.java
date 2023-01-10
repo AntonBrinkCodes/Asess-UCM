@@ -113,6 +113,7 @@ public class BluetoothScanActivity extends AppCompatActivity {
         Intent intent = new Intent(BluetoothScanActivity.this, SensorActivity.class);
         intent.putExtra(SELECTED_DEVICE, selectedDevice);
         startActivity(intent);
+        finish();
     }
 
 
