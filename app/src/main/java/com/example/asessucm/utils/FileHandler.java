@@ -62,7 +62,7 @@ public class FileHandler {
 
     public SensorResultList loadAnglesResults(Context context){
         try {
-            fis = context.openFileInput(fileName);
+            fis = context.openFileInput(fileNameAngles);
             ois = new ObjectInputStream(fis);
             Log.i(filehandler_tag,"Loaded file");
             SensorResultList tmp = (SensorResultList) ois.readObject();

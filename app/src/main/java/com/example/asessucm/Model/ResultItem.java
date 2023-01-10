@@ -28,4 +28,8 @@ public class ResultItem implements Serializable {
     public Date getDate(){
         return questionnaireResult.getDate();
     }
+
+    public double getUCMAngle(){
+        return sensorResultList.getUCMAngle();
+    }
 }

@@ -301,7 +301,11 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                 byte[] data = characteristic.getValue();
                 if (data[0] == MOVESENSE_RESPONSE && data[1] == REQUEST_ID) {
                     //startTestBtn.setEnabled(true); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
-                    runOnUiThread(()->startTestBtn.setEnabled(true)); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
+                    if(!startTestBtn.isEnabled()){
+                        runOnUiThread(()->startTestBtn.setBackgroundResource(R.drawable.roundedbutton_green));
+                        runOnUiThread(()->startTestBtn.setEnabled(true)); //We can start test since we have a package with correct ID and therefore movesense device is streaming.
+                    }
+
                     // NB! use length of the array to determine the number of values in this
                     // "packet", the number of values in the packet depends on the frequency set(!)
                     int len = data.length;
@@ -344,12 +348,16 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                         //BTSensorReadingList.add(new SensorReading(comAcc[j],time));
                         //internalSensorReadingList.add(new SensorReading(IntAngle,IntTimestamp));
                         anglesResultList.addToBTList(comAcc);
-                        for(int i = 0; i<4;i++){
-                            if(comAcc[i]>UCMThreshold){
-                                anglesResultList.setUCM(true);
+                        if(!anglesResultList.getUCM()){
+                            for(int i = 0; i<4;i++){
+                                if(comAcc[i]>UCMThreshold){
+                                    anglesResultList.setUCM(true);
+                                    anglesResultList.setUCMAngle(anglesResultList.getInternalSensorReading()
+                                            .get(anglesResultList.getLength()-5+i).getAngle());
+                                }
                             }
                         }
-                            }
+                    }
                     }
 
 

@@ -32,6 +32,8 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<ResultRecyclerAd
         this.results = results;
     }
 
+
+
     @NonNull
     @Override
     public ResultRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,6 +44,7 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<ResultRecyclerAd
         return vh;
     }
 
+
     @SuppressLint("MissingPermission")
     @Override
     public void onBindViewHolder(@NonNull ResultRecyclerAdapter.ViewHolder holder, int position) {
@@ -50,7 +53,14 @@ public class ResultRecyclerAdapter extends RecyclerView.Adapter<ResultRecyclerAd
         holder.date.setText(DateCleaner.cleanDateFormat(result.getDate()));
         holder.UCMImage.setImageResource(setUCMimage(result.getUCM()));
         holder.questionnaireImage.setImageResource(setQuestImage(result.getQuestionnaireResult().getScoreDelta()));
+        holder.UCMText.setText(setUcmText(result.getUCMAngle()));
+    }
 
+    private String setUcmText(double angle) {
+        if(angle == 0){
+            return "No Ucm!";
+        }
+        else return "Angle at: "+angle+" degrees!";
     }
 
     private int setQuestImage(float scoreDelta) {

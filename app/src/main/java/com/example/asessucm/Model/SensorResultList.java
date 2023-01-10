@@ -8,6 +8,15 @@ public class SensorResultList implements Serializable {
     private ArrayList<SensorReading> internalSensorReading;
     private ArrayList<SensorReading> BTSensorReading;
     private boolean UCM = false;
+    private double UCMAngle = 0;
+
+    public double getUCMAngle() {
+        return UCMAngle;
+    }
+
+    public void setUCMAngle(double UCMAngle) {
+        this.UCMAngle = UCMAngle;
+    }
 
     public SensorResultList(ArrayList<SensorReading> internalSensorReading, ArrayList<SensorReading> BTSensorReading) {
         this.internalSensorReading = internalSensorReading;

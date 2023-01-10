@@ -28,7 +28,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
 
-        android:text="1. Press CONNECT button and choose your sensor. \n2. Attach the sensor to your scapula.\n3. Hold phone in starting position for a few seconds to calibrate. \n4. Press START TEST and perform test.\n5. Press STOP TEST when you're done."
+        android:text="1. Press CONNECT button and choose your sensor. \n2. Attach the sensor to your scapula.\n3. Hold phone in starting position for a few seconds to calibrate. \n4. Press START TEST and perform test.\n5. The test will stop when shoulder rotation is 45 degrees."
         android:layout_marginLeft="10sp"
         android:layout_marginRight="10sp"
         />

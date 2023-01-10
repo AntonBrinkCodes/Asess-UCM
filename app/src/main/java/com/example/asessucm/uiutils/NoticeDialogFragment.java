@@ -20,7 +20,7 @@ public NoticeDialogFragment(String[] strings){
     titleString = strings[0];
     bodyString = strings[1];
     negativeBtnString = strings[2];
-    positiveBtnString = strings[4];
+    positiveBtnString = strings[3];
 }
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.*/

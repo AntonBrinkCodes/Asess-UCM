@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import javax.xml.transform.Result;
 
 public class MainActivity extends AppCompatActivity {
     AppCompatButton testBtn, resultBtn;
@@ -27,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     private void resultBtn(View view) {
-
+        Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -35,5 +39,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     private void testBtn(View view) {
+        Intent intent = new Intent(MainActivity.this, SensorActivity.class);
+        startActivity(intent);
     }
 }

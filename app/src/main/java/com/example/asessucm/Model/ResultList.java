@@ -29,4 +29,6 @@ public class ResultList implements Serializable {
     public void setResults(ArrayList<ResultItem> results) {
         this.results = results;
     }
+
+
 }

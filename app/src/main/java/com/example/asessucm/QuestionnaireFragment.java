@@ -20,7 +20,7 @@ import com.google.android.material.slider.Slider;
 public class QuestionnaireFragment extends Fragment implements Slider.OnSliderTouchListener{
     private SeekBar[] seekBars = new SeekBar[13];
     private Slider[] sliders = new Slider[13];
-    private int result;
+    private float result;
     private TextView[] progressTextViews = new TextView[13];
 
     @Nullable
@@ -51,8 +51,8 @@ public class QuestionnaireFragment extends Fragment implements Slider.OnSliderTo
 
 
 
-    public int getResult() {
-        return result;
+    public float getResult() {
+        return result/13;
     }
 
     @Override

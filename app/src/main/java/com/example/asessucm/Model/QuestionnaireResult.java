@@ -1,5 +1,6 @@
 package com.example.asessucm.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  * score vs previous questionnaire score. If scoreDelta > 13 then some kind of feedback shown to the user.
  * ... Maybe should be int and not float...
  */
-public class QuestionnaireResult {
+public class QuestionnaireResult implements Serializable {
     private float score;
     private float scoreDelta = 0;
     private Date date;
@@ -38,10 +39,6 @@ public class QuestionnaireResult {
     public void setScoreDelta(float scoreDelta) {
         this.scoreDelta = scoreDelta;
     }
-
-   public boolean checkScoreDelta(float nextScore){
-       return this.score - nextScore > 13;
-   }
 
     public Date getDate() {
         return date;
