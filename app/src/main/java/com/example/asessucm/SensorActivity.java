@@ -68,7 +68,7 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     ArrayList<SensorReading> BTAll = new ArrayList<>();
     SensorResultList anglesResultList;
     FileHandler fileHandler;
-    //double comAcc = 0;
+    double comAcc3 = 0;
     double IntAngle = 0;
     float IntTimestamp,BTTimestamp;
     int counter = 0;
@@ -332,6 +332,12 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
                         j++;
                     }
 
+                    double F = 0.8;
+                    comAcc[0] = comAcc[0]*F + comAcc3*(1-F);
+                    for(int i=1;i<4;i++){
+                        comAcc[i] = comAcc[i]*F+comAcc[i-1]*(1-F);
+                    }
+                    comAcc3 = comAcc[3];
                     if (saving) {
                         //BTSensorReadingList.add(new SensorReading(comAcc[j],time));
                         //internalSensorReadingList.add(new SensorReading(IntAngle,IntTimestamp));
